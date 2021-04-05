@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import Product from './Product';
+import background from './image.jpg';
 function Home() {
   return (
     <Container>
       <Banner></Banner>
 
       <Content>
+        <Product />
         <Product />
       </Content>
     </Container>
@@ -15,29 +17,25 @@ function Home() {
 
 export default Home;
 
-const Container = styled.div``;
+const Container = styled.div`
+  max-width: 1500 px;
+  margin: auto;
+`;
 
 const Banner = styled.div`
-  background: #2193b0; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #6dd5ed,
-    #2193b0
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #6dd5ed,
-    #2193b0
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  min-height: 300px;
+  background-image: url(${background});
+  min-height: 600px;
   background-position: center;
   background-size: cover;
+  z-index: -1;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
 `;
 
 const Content = styled.div`
-  background: white;
+  // background: white;
   padding-left: 10px;
   padding-right: 10px;
-  margin-top: -300px;
+  margin-top: -350px;
+
   display: flex;
 `;
