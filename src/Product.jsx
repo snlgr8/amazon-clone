@@ -1,17 +1,37 @@
 import React from 'react';
 import styled from 'styled-components';
 import Rating from '@material-ui/lab/Rating';
-function Product() {
+import { db } from './firebase';
+function Product({ title, price, rating, image, id }) {
+  const addToCart = () => {
+    const cartItem = db.collection('cartItems').doc(id);
+    cartItem.get().then((doc) => {
+      console.log(doc);
+      if (doc.exists) {
+        cartItem.update({
+          quantity: doc.data().quantity + 1,
+        });
+      } else {
+        db.collection('cartItems').doc(id).set({
+          name: title,
+          price,
+          quantity: 1,
+          image,
+        });
+      }
+    });
+  };
+
   return (
     <Container>
-      <Title>Ipad pro</Title>
-      <Price>Rs 400000</Price>
+      <Title>{title}</Title>
+      <Price>Rs {price}</Price>
       <ProductRating>
-        <Rating name='read-only' value={4} readOnly />
+        <Rating name='read-only' value={rating} readOnly />
       </ProductRating>
-      <Image src='https://m.media-amazon.com/images/I/811aBwuSuIL._AC_UY327_FMwebp_QL65_.jpg' />
+      <Image src={image} />
       <ActionSection>
-        <AddToCartButton>Add to cart</AddToCartButton>
+        <AddToCartButton onClick={addToCart}>Add to cart</AddToCartButton>
       </ActionSection>
     </Container>
   );
@@ -46,6 +66,7 @@ const AddToCartButton = styled.button`
   border: 2px solid #a88734;
   border-radius: 2px;
   height: 30px;
+  cursor: pointer;
 `;
 const ActionSection = styled.div`
   display: grid;
