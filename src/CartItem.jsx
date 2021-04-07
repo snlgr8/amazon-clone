@@ -1,12 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
-
-function CartItem({ item }) {
+import { db } from './firebase';
+function CartItem({ item, id }) {
   let options = [];
   for (let i = 1; i < Math.max(item.quantity + 1, 20); i++) {
     options.push(<option value={i}> Qty: {i}</option>);
   }
 
+  const onChangeQuantity = (newQty) => {
+    db.collection('cartItems')
+      .doc(id)
+      .update({
+        quantity: parseInt(newQty),
+      });
+  };
+  const removeItem = () => {
+    db.collection('cartItems')
+      .doc(id)
+      .delete()
+      .then((d) => console.log(d));
+  };
   return (
     <Container>
       <ImageContainer>
@@ -19,9 +32,16 @@ function CartItem({ item }) {
 
         <CartItemInfoButton>
           <CartItemQuantityContainer>
-            <select value={item.quantity}>{options}</select>
+            <select
+              value={item.quantity}
+              onChange={(e) => onChangeQuantity(e.target.value)}
+            >
+              {options}
+            </select>
           </CartItemQuantityContainer>
-          <CartItemDeleteContainer>Delete</CartItemDeleteContainer>
+          <CartItemDeleteContainer>
+            <RemoveItemButton onClick={removeItem}>Delete</RemoveItemButton>
+          </CartItemDeleteContainer>
         </CartItemInfoButton>
       </CartItemInfo>
 
@@ -83,3 +103,5 @@ const CartItemPrice = styled.div`
   font-size: 18px;
   margin-left: 16px;
 `;
+
+const RemoveItemButton = styled.button``;
