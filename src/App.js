@@ -5,6 +5,7 @@ import Home from './Home';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { db } from './firebase';
+import Login from './Login';
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -29,6 +30,9 @@ function App() {
       <div className='App'>
         <Header cartItems={cartItems} />
         <Switch>
+          <Route path='/login'>
+            <Login />
+          </Route>
           <Route path='/cart'>
             <Cart cartItems={cartItems} />
           </Route>
